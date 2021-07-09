@@ -1,0 +1,9 @@
+asgiref
+Django
+pip
+psycopg2
+pytz
+setuptools
+sqlparse
+djangorestframework
+request
