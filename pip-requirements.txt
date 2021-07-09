@@ -6,4 +6,4 @@ pytz
 setuptools
 sqlparse
 djangorestframework
-request
+requests
