@@ -12,6 +12,7 @@ class PersonSerializer(serializers.ModelSerializer):
 
 
 class DocumentTypeSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = DocumentType
         fields = ('id', 'name', 'description')

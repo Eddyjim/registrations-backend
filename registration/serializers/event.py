@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from registration.models import Registration
-from registration.models.event import HandWashRegistration
+from registration.models.event import HandWashRegistration, Event, TempRegistration
 
 
 class PreRegistrationSerializer(serializers.ModelSerializer):
@@ -30,9 +30,26 @@ class HandWashRegistrationSerializer(serializers.ModelSerializer):
         fields = ('person_id')
 
 
+class EventSerializer(serializers.ModelSerializer):
+    location_name = serializers.ReadOnlyField(source='location.name')
+    location_address = serializers.ReadOnlyField(source='location.address')
+
+    class Meta:
+        model = Event
+        fields = ('id', 'label', 'date', 'location_name', 'location_address', 'capacity', 'current_capacity')
+
+
 class RegistrationQueueSerializer(serializers.ModelSerializer):
     person_id = serializers.CharField(source="person")
 
     class Meta:
         model = HandWashRegistration
         fields = ('person_id')
+
+
+class TempRegistrationSerializer(serializers.ModelSerializer):
+    event_id = serializers.CharField(source="event")
+
+    class Meta:
+        model: TempRegistration
+        fields = ('id', 'event_id', 'amount')

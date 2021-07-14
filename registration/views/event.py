@@ -1,10 +1,53 @@
+import json
+
 from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 
-from registration.models import Registration
-from registration.serializers.event import PreRegistrationSerializer, HandWashRegistrationSerializer
+from registration.models import Registration, Event
+from registration.models.event import TempRegistration
+from registration.models.text import Text
+from registration.serializers.event import PreRegistrationSerializer, HandWashRegistrationSerializer, EventSerializer
+
+
+@api_view(['GET'])
+def events(request):
+    """
+
+    :param request:
+    :return:
+    """
+    enabled_events = Event.objects.filter(enabled=True)
+    event_serializer = EventSerializer(enabled_events, many=True)
+
+    return JsonResponse(event_serializer.data, status=status.HTTP_200_OK, safe=False)
+
+
+@api_view(['POST', 'DELETE'])
+def tempRegistration(request):
+    """
+
+    """
+    if request.method == 'POST':
+
+        body = json.loads(request.body)
+        event = Event.objects.get(id=body['event_id'])
+        temp = TempRegistration(event=event, amount=body['amount'])
+        if event.current_capacity + body['amount'] <= event.capacity:
+            event.current_capacity += body['amount']
+            event.save()
+            temp.save()
+            return JsonResponse({'temp_id': temp.id, 'message': Text.objects.get(name='timelimit').value}, status=status.HTTP_201_CREATED)
+        else:
+            return JsonResponse({'error': Text.objects.get(name='maxcapacity').value}, status=status.HTTP_204_NO_CONTENT)
+
+
+    elif request.method == 'DELETE':
+        body = request.body
+        event = Event.objects.get(body['temp_id'])
+
+        return JsonResponse({'deleted': body}, status=status.HTTP_200_OK)
 
 
 @api_view(['POST', 'DELETE'])

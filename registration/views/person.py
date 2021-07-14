@@ -4,8 +4,8 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 
-from registration.models import Person
-from registration.serializers.person import PersonSerializer
+from registration.models import Person, DocumentType
+from registration.serializers.person import PersonSerializer, DocumentTypeSerializer
 
 
 class PersonViewSet(viewsets.ModelViewSet):
@@ -45,3 +45,11 @@ def person(request):
             Person.objects.filter(person_id=person_id).delete()
             return JsonResponse(status=status.HTTP_200_OK)
         return JsonResponse(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def document_type(_):
+    document_types = DocumentType.objects.all()
+    document_type_serializer = DocumentTypeSerializer(document_types, many=True)
+
+    return JsonResponse(document_type_serializer.data, safe=False)
