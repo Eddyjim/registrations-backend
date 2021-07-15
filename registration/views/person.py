@@ -27,8 +27,9 @@ def person(request):
     if request.method == 'GET':
         persons = Person.objects.all()
         document_id = request.query_params.get('document_id', None)
+        document_type = request.query_params.get('document_type', None)
         if document_id:
-            persons = persons.filter(document_id__contains=document_id)
+            persons = persons.filter(document_type__exact=document_type,document_id__exact=document_id)
         person_serializer = PersonSerializer(persons, many=True)
 
         return JsonResponse(person_serializer.data, safe=False)

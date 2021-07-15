@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^api/registration/events$', views.events),
     url(r'^api/registration/tempRegistration$', views.tempRegistration),
     url(r'^api/text$', views.get_text),
+    url(r'^api/questions$', views.get_questions),
     url(r'^api/registration/handwash$', views.hand_wash_registration)
 
 ]

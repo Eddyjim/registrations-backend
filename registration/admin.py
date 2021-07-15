@@ -4,7 +4,7 @@ from django.contrib import admin
 # Register your models here.
 from registration.models import Person, DocumentType, Event, Location
 from registration.models.event import TempRegistration
-from registration.models.text import Text
+from registration.models.text import Text, Questions
 
 
 @admin.register(Person)
@@ -57,3 +57,8 @@ class DocumentTypeAdmin(admin.ModelAdmin):
 @admin.register(Text)
 class DocumentTypeAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'value')
+
+
+@admin.register(Questions)
+class QuestionsAdmin(admin.ModelAdmin):
+    list_display = ('id', 'value')
