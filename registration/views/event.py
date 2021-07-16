@@ -43,13 +43,31 @@ def tempRegistration(request):
         else:
             return JsonResponse({'error': Text.objects.get(name='maxcapacity').value},
                                 status=status.HTTP_204_NO_CONTENT)
-
-
     elif request.method == 'DELETE':
-        body = request.body
-        event = Event.objects.get(body['temp_id'])
+        temp_registration_id = request.query_params.get('temp_registration_id', None)
 
-        return JsonResponse({'deleted': body}, status=status.HTTP_200_OK)
+        if temp_registration_id:
+            temp_registration = TempRegistration.objects.get(id=temp_registration_id)
+            event = temp_registration.event
+            event.current_capacity = event.current_capacity - temp_registration.amount
+            event.save()
+            temp_registration.delete()
+            return JsonResponse({"message": "deleted"}, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def delete_preregistration(request):
+    if request.method == 'POST':
+        pre_registration_data = JSONParser().parse(request)
+        temp_registration_id = pre_registration_data['temp_registration_id']
+
+        if temp_registration_id:
+            temp_registration = TempRegistration.objects.get(id=temp_registration_id)
+            event = registration.event
+            event.current_capacity = event.current_capacity - temp_registration.amount
+            event.save()
+            temp_registration.delete()
+            return JsonResponse({"message": "deleted"}, status=status.HTTP_200_OK)
 
 
 @api_view(['POST', 'DELETE'])
@@ -66,10 +84,14 @@ def pre_registration(request):
             person_serializer.save()
             return JsonResponse(person_serializer.data, status=status.HTTP_201_CREATED)
         return JsonResponse(person_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    elif request.method == 'DELETE':
-        registration_id = request.query_params.get('registration_id', None)
-        if registration_id:
-            Registration.objects.get(registration_id=registration_id).delete()
+    # elif request.method == 'DELETE':
+    #     temp_registration_id = request.query_params.get('temp_registration_id', None)
+    #     if temp_registration_id:
+    #         temp_registration = TempRegistration.objects.get(id=temp_registration_id)
+    #         event = registration.event
+    #         event.current_capacity = event.current_capacity - temp_registration.amount
+    #         event.save()
+    #         temp_registration.delete()
 
 
 @api_view(['POST', 'DELETE'])
@@ -96,6 +118,14 @@ def registration(request):
                     'document_id': person.document_id
                 }
                 message = Text.objects.get(name='already-registered')
+                try:
+                    tempRegistration = TempRegistration.objects.get(id=registration_data['temp_registration'])
+                    event = tempRegistration.event
+                    event.current_capacity = event.current_capacity - tempRegistration.amount
+                    event.save()
+                    tempRegistration.delete()
+                except:
+                    pass
                 return JsonResponse({'message': message.value, 'person': document}, status=status.HTTP_400_BAD_REQUEST)
         try:
             tempRegistration = TempRegistration.objects.get(id=registration_data['temp_registration'])

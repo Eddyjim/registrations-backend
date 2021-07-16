@@ -33,12 +33,11 @@ class HandWashRegistrationSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     location_name = serializers.ReadOnlyField(source='location.name')
     location_address = serializers.ReadOnlyField(source='location.address')
-    date_formated = serializers.DateTimeField(source='date', format='DD/MM/YYYY hh:mm')
-
+    # date_formated = serializers.DateTimeField(source='date', format='DD/MM/YYYY hh:mm')
 
     class Meta:
         model = Event
-        fields = ('id', 'label', 'date_formated', 'location_name', 'location_address', 'capacity', 'current_capacity')
+        fields = ('id', 'label', 'date', 'location_name', 'location_address', 'capacity', 'current_capacity')
 
 
 class RegistrationQueueSerializer(serializers.ModelSerializer):

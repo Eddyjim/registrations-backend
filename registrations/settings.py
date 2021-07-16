@@ -53,6 +53,10 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
 ]
 
+REST_FRAMEWORK = {
+    'DATETIME_FORMAT': '%m/%d/%Y %H:%M:%S',
+}
+
 ROOT_URLCONF = 'registrations.urls'
 
 TEMPLATES = [
