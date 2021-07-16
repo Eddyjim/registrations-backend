@@ -3,7 +3,7 @@ from django.contrib import admin
 
 # Register your models here.
 from registration.models import Person, DocumentType, Event, Location
-from registration.models.event import TempRegistration
+from registration.models.event import TempRegistration, Registration
 from registration.models.text import Text, Questions
 
 
@@ -62,3 +62,15 @@ class DocumentTypeAdmin(admin.ModelAdmin):
 @admin.register(Questions)
 class QuestionsAdmin(admin.ModelAdmin):
     list_display = ('id', 'value')
+
+
+@admin.register(Registration)
+class QuestionsAdmin(admin.ModelAdmin):
+    list_display = ('id', 'event_label', 'person_id', 'attended', 'seat_number')
+    list_filter = ['event__label', 'event__date','person__document_id']
+
+    # def event_label(self, obj):
+    #     return obj.event.label
+    #
+    def person_id(self, obj):
+        return obj.person.document_id

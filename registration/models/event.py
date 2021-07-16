@@ -44,6 +44,12 @@ class Registration(models.Model):
     attended = models.BooleanField(default=False, null=False)
     seat_number = models.PositiveIntegerField(null=True)
 
+    def person_id(self):
+        return self.person.id
+
+    def event_label(self):
+        return self.event.label
+
     class Meta:
         unique_together = ('event', 'person')
 
