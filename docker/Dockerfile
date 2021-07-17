@@ -7,7 +7,7 @@ RUN apt-get install -y python-dev
 
 RUN mkdir /app
 WORKDIR /app
-COPY .. .
+COPY . .
 RUN pip install --upgrade pip
 RUN pip install -r pip-requirements.txt
 
@@ -17,5 +17,5 @@ EXPOSE 8000
 
 #ENTRYPOINT ["gunicorn", "--config", "gunicorn_config.py", "wsgi:application"]
 #ENTRYPOINT ["/app/scripts/entrypoint.sh"]
-ENTRYPOINT ["gunicorn" ,"registrations.wsgi"]
+ENTRYPOINT ["python", "manage.py", "runserver"]
 
