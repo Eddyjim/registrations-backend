@@ -1,0 +1,31 @@
+version: "3.9"
+networks:
+   registrations_network:
+     external: true
+services:
+#  frontend:
+#    image: registrations-frontend
+#    ports:
+#      - "80:80"
+#    networks:
+#      - registrations_network
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: reservations
+      POSTGRES_USER: backend
+      POSTGRES_PASSWORD: iglesiacei
+    networks:
+      - registrations_network
+  backend:
+#    build:
+#      context: .
+#      dockerfile: ./docker/Dockerfile
+    image: registrations-backend
+    ports:
+      - "8000:8000"
+    networks:
+      - registrations_network
+

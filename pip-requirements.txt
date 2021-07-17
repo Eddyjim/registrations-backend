@@ -8,3 +8,4 @@ sqlparse
 djangorestframework
 requests
 django-cors-headers
+gunicorn
