@@ -20,12 +20,20 @@ services:
     networks:
       - registrations_network
   backend:
-#    build:
-#      context: .
-#      dockerfile: ./docker/Dockerfile
-    image: registrations-backend
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+#    image: registrations-backend
     ports:
       - "8000:8000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=reservations
+      - DB_USER=backend
+      - DB_PASSWORD=iglesiacei
+      - DB_PORT=5432
     networks:
       - registrations_network
+    depends_on:
+      - db
 
