@@ -3,12 +3,12 @@ networks:
    registrations_network:
      external: true
 services:
-#  frontend:
-#    image: registrations-frontend
-#    ports:
-#      - "80:80"
-#    networks:
-#      - registrations_network
+  frontend:
+    image: registrations-frontend
+    ports:
+      - "80:80"
+    networks:
+      - registrations_network
   db:
     image: postgres
     ports:
