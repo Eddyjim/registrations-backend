@@ -1,7 +1,7 @@
 version: "3.3"
 networks:
    registrations_network:
-     driver: bridge
+     external: true
 services:
   frontend:
     image: registrations-frontend
@@ -12,8 +12,9 @@ services:
   db:
     image: postgres
     ports:
-      - "5432:5432"
+      - "0.0.0.0:5432:5432"
     environment:
+      POSTGRES_HOST: localhost
       POSTGRES_DB: reservations
       POSTGRES_USER: backend
       POSTGRES_PASSWORD: iglesiacei
@@ -23,7 +24,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/Dockerfile
-#    image: registrations-backend
+    command: python manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
     environment:
@@ -36,4 +37,3 @@ services:
       - registrations_network
     depends_on:
       - db
-
