@@ -14,6 +14,8 @@ COPY . .
 RUN pip install --upgrade pip
 RUN pip install -r pip-requirements.txt
 
+#RUN python manage.py migrate
+
 #ENV PYTHONPATH "${PYTHONPATH}:./app"
 #EXPOSE 8000
 

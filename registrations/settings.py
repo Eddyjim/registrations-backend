@@ -143,4 +143,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOWED_ORIGINS = [
         'http://127.0.0.1',
         'http://localhost',
+        'http://backend',
+        'http://143.198.178.8'
     ]

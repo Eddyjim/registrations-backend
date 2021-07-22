@@ -7,6 +7,10 @@ services:
     image: registrations-frontend
     ports:
       - "80:80"
+    environment:
+      URL_SCHEMA: http
+      BACKEND_HOST: backend
+      BACKEND_PORT: 8000
     networks:
       - registrations_network
   db:
