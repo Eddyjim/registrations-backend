@@ -20,7 +20,7 @@ class Person(models.Model):
     birthday = models.DateField(null=False, default=datetime.now())
     city = models.CharField(max_length=50, null=False)
     address = models.CharField(max_length=500, null=False)
-    phone = models.IntegerField(null=False)
+    phone = models.BigIntegerField(null=False)
 
     class Meta:
         unique_together = ('document_type', 'document_id')
